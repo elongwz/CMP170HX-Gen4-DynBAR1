@@ -72,7 +72,7 @@ Fix: `config/cmp-gen4-acs-off.sh` + `cmp-gen4-acs-off.service`, clearing `ECAP_A
 
 ### 2.1 Per-allocation dynamic BAR1 (METHOD3, `patches/0001`)
 
-From [duanyll's 48 GB 4090 work](https://duanyll.com/2026/7/13/4090-48G-P2P/) (branch `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`). The patch here is that branch's full diff against stock 595.71.05 (3 files / 926 lines) and applies to **610.43.03 after uild.sh has applied its 16 base patches** with offsets only (89–97 lines). Apply it to that prepared tree, not to the bare upstream source: one hunk conflicts there because a base patch touches the same region.
+From [duanyll's 48 GB 4090 work](https://duanyll.com/2026/7/13/4090-48G-P2P/) (branch `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`). The patch here is that branch's full diff against stock 595.71.05 (3 files / 926 lines) and applies to **610.43.03 after `build.sh` has applied its 16 base patches** with offsets only (89–97 lines). Apply it to that prepared tree, not to the bare upstream source: one hunk conflicts there because a base patch touches the same region.
 
 Idea: instead of one identity mapping of the whole FB, map **each allocation** into a VA slot of the peer's BAR1 (`kbusMapFbAperture_HAL`), so the offset is always inside the window; GMMU PTEs then translate to the high FB address, and the peer PTE encodes `windowDmaBase + offset`. Overhead is tiny: a 2-GPU ring needs ~4 mappings / ~24 MB.
 

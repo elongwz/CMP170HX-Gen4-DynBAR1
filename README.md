@@ -76,7 +76,7 @@ peer_bus_addr = bar1BusAddr + fbPhysOffset;
 
 ### 2.1 逐分配动态 BAR1（METHOD3，`patches/0001`）
 
-出自 [duanyll 的 48G 4090 方案](https://duanyll.com/2026/7/13/4090-48G-P2P/)（分支 `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`），本仓库收录其相对官方 595.71.05 的完整 diff（3 文件 / 926 行），在 **610.43.03（已由 uild.sh 打好 16 个基础补丁的树）** 上只差行偏移（89–97 行）即可应用。注意它必须打在打好基础补丁的树上：直接对官方原始 610 源码打会有 1 个 hunk 冲突（基础补丁已改过同一区域）。
+出自 [duanyll 的 48G 4090 方案](https://duanyll.com/2026/7/13/4090-48G-P2P/)（分支 `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`），本仓库收录其相对官方 595.71.05 的完整 diff（3 文件 / 926 行），在 **610.43.03（已由 `build.sh` 打好 16 个基础补丁的树）** 上只差行偏移（89–97 行）即可应用。注意它必须打在打好基础补丁的树上：直接对官方原始 610 源码打会有 1 个 hunk 冲突（基础补丁已改过同一区域）。
 
 原理：不再整块 identity 映射，而是**按分配**把这块显存映进对端 BAR1 的一个 VA 槽（`kbusMapFbAperture_HAL`），偏移永远在窗口内，再由 GMMU PTE 翻译到高地址显存；peer PTE 编码用 `windowDmaBase + offset`。开销极小：2 卡 ring 只需 4 条 / 24 MB 级。
 
