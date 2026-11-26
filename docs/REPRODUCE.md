@@ -30,7 +30,7 @@ lspci -d 10de:20c2 -nn                     # 期望两条 10de:20c2 rev a1
 确认现在的 P2P 状态（应能预期到“假速度 + 掉卡”或“20/26 非对称”）：
 
 ```bash
-ls /home/gis/bench/p2p_gate.py || cp /home/gis/p2p/Gen4-DynBAR1/scripts/p2p_gate.py /home/gis/bench/
+ls /home/gis/bench/p2p_gate.py || { mkdir -p /home/gis/bench && cp /home/gis/p2p/Gen4-DynBAR1/scripts/p2p_gate.py /home/gis/bench/; }
 python3 /home/gis/bench/p2p_gate.py        # 旧状态下会看到 CORRUPT() 或速度异常
 ```
 
@@ -71,6 +71,9 @@ ls $SRC/kernel-open/nvidia/nv.c $SRC/src/nvidia/generated/g_kern_bus_nvoc.c
 
 用仓库里的 `patches/`（已 clone 到 `/home/gis/p2p/Gen4-DynBAR1/patches/`），然后在源码根目录按顺序打：
 
+> ⚠️ 必须打在 **`build.sh` 已经跑过、16 个基础补丁已就位**的树上（就是 §1 那一步）。
+> 直接对官方原始 610.43.03 源码打，`0001` 会有 1 个 hunk 冲突（基础补丁动过同一区域）。
+
 ```bash
 SRC=/home/gis/p2p/cmpunlocker-v0.5-oc-80g-gen3/driver/.build/open-gpu-kernel-modules-610.43.03
 P=/home/gis/p2p/Gen4-DynBAR1/patches
@@ -107,6 +110,11 @@ grep -c "nv_cmp170hx_gen3_post" $SRC/kernel-open/nvidia/nv.c                    
 > 若某补丁 `--dry-run` 报失败，用 `patch -p1 --fuzz=3` 或对照 `src/` 下我们最终的 5 个文件手工合。
 > `0001` 的路径前缀是 `a/src/...`、`0003` 是 `a/kernel-open/...`，都在源码根用 `-p1` 即可。
 
+> **关于诊断打印**：`0001..0005` 打出来的是**干净构建**（只有 `METHOD3: dynamic BAR1 P2P map ...`
+> 这一条成功日志）。本文实测所用的驱动额外用 `scripts/m3diag.py` / `scripts/m3diag2.py` 加了
+> `M3DIAG` / `M3DIAG2` 探针（并把那条成功日志的级别从 `LEVEL_INFO` 提到 `LEVEL_ERROR`），
+> 它们**只影响日志，不影响功能**。要复现我们的 dmesg 才需要装，见 §9。
+
 ---
 
 ## 3. 安全重编（屏蔽自动热重载）
@@ -137,8 +145,9 @@ nvidia.ko 已安装：/lib/modules/$(uname -r)/updates/cmpunlocker/nvidia.ko
 KO=/lib/modules/$(uname -r)/updates/cmpunlocker/nvidia.ko
 ls -l $KO                                  # 期望约 35 MB，不能是 0 字节
 nm $KO 2>/dev/null | grep -c kbusCreateP2PMapping_GH100    # ≥1
-nm $KO 2>/dev/null | grep -c kbusCreateP2PMapping_GP100    # 可能仍有（其它路径引用），不是判据
+nm $KO 2>/dev/null | grep -c kbusCreateP2PMapping_GP100    # 0（已无派发指向它，通常会被裁掉）
 strings $KO | grep -c "dynamic BAR1 P2P map"              # ≥1
+strings $KO | grep -c M3DIAG                              # 0（干净构建；装了诊断才是 3，见 §9）
 ```
 
 重建 initramfs：
@@ -188,19 +197,8 @@ Type=oneshot / RemainAfterExit=yes
 `08:00.0` 的 `LnkCtl2` 会被 gen2 收尾逻辑又写回 2，用服务在 nvidia 起来后改回 4：
 
 ```bash
+sudo install -m 755 /home/gis/p2p/Gen4-DynBAR1/config/cmp-gen4-lnkctl2.sh /usr/local/sbin/cmp-gen4-lnkctl2.sh
 sudo install -m 644 /home/gis/p2p/Gen4-DynBAR1/config/cmp-gen4-lnkctl2.service /etc/systemd/system/cmp-gen4-lnkctl2.service
-sudo tee /usr/local/sbin/cmp-gen4-lnkctl2.sh >/dev/null <<'EOF'
-#!/bin/bash
-# 两个 GPU 的 LnkCtl2 target = 4 (16GT/s)
-for b in 05:00.0 08:00.0; do
-    cur=$(setpci -s $b CAP_EXP+30.w)
-    [ "$cur" = "0004" ] && continue
-    setpci -s $b CAP_EXP+30.w=0x0004:0x000f
-    echo "lnkctl2: $b $cur -> $(setpci -s $b CAP_EXP+30.w)"
-done
-exit 0
-EOF
-sudo chmod 755 /usr/local/sbin/cmp-gen4-lnkctl2.sh
 sudo systemctl daemon-reload
 sudo systemctl enable cmp-gen4-lnkctl2.service
 ```
@@ -246,18 +244,13 @@ nvidia-smi --query-gpu=index,name,memory.total,pci.bus_id --format=csv
 ### 6.3 动态 BAR1 是否真的接管
 
 ```bash
-sudo dmesg | grep -E "METHOD3|M3DIAG" | tail -20
+# Gen4 三段（这三行是 LEVEL_ERROR，干净构建也能看到）
 sudo dmesg | grep -E "CMP Gen4: (bring-up start|XP programmed|PCIe link trained)" | tail -10
+# 动态窗口日志（见下方说明：干净构建里看不到，判据以 6.4 为准）
+sudo dmesg | grep -E "METHOD3|M3DIAG" | tail -20
 ```
 
-期望看到（每个方向各一条 METHOD3）：
-
-```
-_nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0x... size 0x... bar1Off 0x400000 dmaBase 0x12000400000
-M3DIAG pte-gate: ... bar1Sup=1 staticPeer=0 staticMap=0
-```
-
-以及 Gen4 bring-up 三段：
+Gen4 期望（每卡三段）：
 
 ```
 CMP Gen4: bring-up start LC0=0x80084c00 ...
@@ -265,9 +258,22 @@ CMP Gen4: XP programmed LC0=0x80404c00 ...
 CMP Gen4: PCIe link trained (LNKSTA=0x1104)
 ```
 
+> ⚠️ **干净构建下 `METHOD3` 那行不会出现在 dmesg**：它在补丁里是 `NV_PRINTF(LEVEL_INFO, ...)`，
+> 而 NVIDIA 驱动默认只输出 warning 及以上。我们在实测时用 `scripts/m3diag.py` 把它提到了
+> `LEVEL_ERROR`，所以下面的日志只在那次构建里可见：
+>
+> ```
+> _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0x... bar1Off 0x400000 dmaBase 0x12000400000
+> M3DIAG pte-gate: ... bar1Sup=1 staticPeer=0 staticMap=0        # 可选
+> ```
+>
+> 因此「动态映射是否生效」的**权威判据是 6.4 的逐位校验**（4 MiB 起全 `mismatched=0` 且 2 GiB 不崩），
+> 不是日志。要在干净构建里也能看到日志，把该行级别改成 `LEVEL_ERROR` 重编即可（一行改动）。
+
 ### 6.4 逐位完整性（关键，别只看速度）
 
 ```bash
+mkdir -p /home/gis/bench
 cp /home/gis/p2p/Gen4-DynBAR1/scripts/p2p_gate.py /home/gis/bench/ 2>/dev/null || true
 python3 /home/gis/bench/p2p_gate.py
 ```
@@ -314,6 +320,7 @@ sudo update-initramfs -u
 sudo poweroff     # 物理断电 15s 后上电
 
 # 彻底回退到“Gen4 可用、无动态 BAR1”的驱动与配置
+# （rollback.sh 只存在本实验机上；其它机器请用备份的 nvidia.ko + 原 conf 手工还原）
 sudo bash /home/gis/p2p/bak-gen4-good-20261126-1025/rollback.sh
 sudo poweroff
 ```

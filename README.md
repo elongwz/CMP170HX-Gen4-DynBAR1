@@ -76,7 +76,7 @@ peer_bus_addr = bar1BusAddr + fbPhysOffset;
 
 ### 2.1 逐分配动态 BAR1（METHOD3，`patches/0001`）
 
-出自 [duanyll 的 48G 4090 方案](https://duanyll.com/2026/7/13/4090-48G-P2P/)（分支 `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`），本仓库收录其相对官方 595.71.05 的完整 diff（3 文件 / 926 行），在 610.43.03 上 dry-run 全中。
+出自 [duanyll 的 48G 4090 方案](https://duanyll.com/2026/7/13/4090-48G-P2P/)（分支 `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`），本仓库收录其相对官方 595.71.05 的完整 diff（3 文件 / 926 行），在 **610.43.03（已由 uild.sh 打好 16 个基础补丁的树）** 上只差行偏移（89–97 行）即可应用。注意它必须打在打好基础补丁的树上：直接对官方原始 610 源码打会有 1 个 hunk 冲突（基础补丁已改过同一区域）。
 
 原理：不再整块 identity 映射，而是**按分配**把这块显存映进对端 BAR1 的一个 VA 槽（`kbusMapFbAperture_HAL`），偏移永远在窗口内，再由 GMMU PTE 翻译到高地址显存；peer PTE 编码用 `windowDmaBase + offset`。开销极小：2 卡 ring 只需 4 条 / 24 MB 级。
 
@@ -108,12 +108,14 @@ pThis->__kbusHasPcieBar1P2PMapping__         = &kbusHasPcieBar1P2PMapping_GH100;
 pThis->__kbusIsPcieBar1P2PMappingSupported__ = &kbusIsPcieBar1P2PMappingSupported_GH100;
 ```
 
-生效证据（冷启后首次跨卡拷贝）：
+生效证据（冷启后首次跨卡拷贝；`METHOD3` 那行在补丁里是 `LEVEL_INFO`，我们实测时用 `scripts/m3diag*.py` 把它提到了 `LEVEL_ERROR` 才在 dmesg 里可见）：
 
 ```
 NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf001a1 size 0x200000 bar1Off 0x400000 dmaBase 0x12000400000
 NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: ... bar1Sup=1 staticPeer=0 staticMap=0
 ```
+
+> 判定“动态映射是否真的生效”请**只看逐位校验**（`scripts/p2p_gate.py` 全 `mismatched=0` 且 2 GiB 不崩），不要依赖这两行日志。
 
 ### 2.3 配套（`patches/0004`、`0005`）
 
@@ -126,7 +128,7 @@ NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: ... bar1Sup=1 st
 
 ```bash
 git clone https://github.com/elongwz/CMP170HX-Gen4-DynBAR1.git
-cat docs/REPRODUCE.md      # 从零复现：打补丁 → 安全重编 → 系统配置 → 物理断电冷启 → 6 项验收
+cat docs/REPRODUCE.md      # 从零复现：打补丁 → 安全重编 → 系统配置 → 物理断电冷启 → 逐项验收（链路 / 显存 / Gen4 日志 / 逐位校验 / 吞吐）
 ```
 
 三条铁律（否则一定翻车）：
@@ -157,7 +159,8 @@ cat docs/REPRODUCE.md      # 从零复现：打补丁 → 安全重编 → 系�
 │   ├── cmp-gen3.conf                     modprobe 配置（Gen4 + BAR1 + ForceP2P）
 │   ├── cmp-gen4-acs-off.sh               关 PEX880xx ACS
 │   ├── cmp-gen4-acs-off.service
-│   └── cmp-gen4-lnkctl2.service          兜底把两卡 LnkCtl2 写回 4
+│   ├── cmp-gen4-lnkctl2.sh               兜底脚本：两卡 LnkCtl2 目标 = 4
+│   └── cmp-gen4-lnkctl2.service
 ├── scripts/                  验收/诊断脚本（见 docs/REPRODUCE.md 第 6-7 节）
 ├── tools/build_noreload.sh   安全重编（屏蔽自动热重载）
 ├── logs/                     冷启到验收的 dmesg 与链路证据
@@ -193,7 +196,7 @@ options nvidia cmp_pcie_gen=4 NVreg_RegistryDwords="RmForceEnableGen2=1;RMPcieLi
 1. **`nvidia-smi` 的 `pcie.link.gen.current` 永远报 2/3** —— GSP 固有认知，无法修，只看 `lspci -vv` 的 `LnkSta` + 实测带宽。
 2. **不要热重载驱动**：`rmmod`/`modprobe` 在 BAR1/GSP 状态受损时会把整机卡死（SSH banner timeout，只能断电）。
 3. **热重启不清 PHY**：改 conf/驱动后必须物理断电 15 s+。
-4. **`M3DIAG` / `M3DIAG2` 诊断打印**仍编在驱动里（`LEVEL_ERROR`，每次跨卡映射刷几行）；不要就去 `nv_gpu_ops.c` / `kern_bus_gh100.c` 搜 `M3DIAG` 删掉重编。
+4. **诊断打印是可选项**：`patches/0001..0005` 打出来是干净构建（没有 `M3DIAG`，连 `METHOD3` 那行也是 `LEVEL_INFO`、dmesg 不显示）；本文实测用的驱动额外装过 `scripts/m3diag*.py`（把成功日志提到 `LEVEL_ERROR` 并加 4 处探针），只在需要看日志时用。
 5. **`08:00.0` 的 `LnkCtl2` 会被 gen2 收尾写回 2** → 必须有 `cmp-gen4-lnkctl2.service`。
 6. **不要用 `CmpGen4=1`**（早期走法）：GSP 起不来（`No devices`，写 `0x881C0` 被拒 `0xbadf5040`）。
 7. **`cmp-pcie-speed` 工具在本方案里没用**：`SET_PCIE_SPEED(3)` 依旧 `0x56`，Gen4 靠 nv.c 的 bring-up。

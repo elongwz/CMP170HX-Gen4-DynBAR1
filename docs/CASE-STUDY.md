@@ -234,12 +234,12 @@ grep -n "__kbus.*P2PMapping" src/nvidia/generated/g_kern_bus_nvoc.c
 ```
 
 ```
-785:  pThis->__kbusCreateP2PMapping__            = &kbusCreateP2PMapping_GP100;
-796:  pThis->__kbusRemoveP2PMapping__            = &kbusRemoveP2PMapping_GP100;
-1114: pThis->__kbusCreateP2PMappingForBar1P2P__  = &kbusCreateP2PMappingForBar1P2P_395e98;
-1126: pThis->__kbusRemoveP2PMappingForBar1P2P__  = &kbusRemoveP2PMappingForBar1P2P_395e98;
-1138: pThis->__kbusHasPcieBar1P2PMapping__       = &kbusHasPcieBar1P2PMapping_d69453;
-1150: pThis->__kbusIsPcieBar1P2PMappingSupported__ = &kbusIsPcieBar1P2PMappingSupported_d69453;
+789:  pThis->__kbusCreateP2PMapping__            = &kbusCreateP2PMapping_GP100;
+800:  pThis->__kbusRemoveP2PMapping__            = &kbusRemoveP2PMapping_GP100;
+1117: pThis->__kbusCreateP2PMappingForBar1P2P__  = &kbusCreateP2PMappingForBar1P2P_395e98;
+1129: pThis->__kbusRemoveP2PMappingForBar1P2P__  = &kbusRemoveP2PMappingForBar1P2P_395e98;
+1141: pThis->__kbusHasPcieBar1P2PMapping__       = &kbusHasPcieBar1P2PMapping_d69453;
+1153: pThis->__kbusIsPcieBar1P2PMappingSupported__ = &kbusIsPcieBar1P2PMappingSupported_d69453;
 ```
 
 `_395e98` / `_d69453` 这种十六进制后缀是生成器给“**stub**”起的名字：去 `src/nvidia/src/kernel/gpu/bus/` 里搜，

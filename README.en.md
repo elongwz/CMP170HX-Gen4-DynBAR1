@@ -72,7 +72,7 @@ Fix: `config/cmp-gen4-acs-off.sh` + `cmp-gen4-acs-off.service`, clearing `ECAP_A
 
 ### 2.1 Per-allocation dynamic BAR1 (METHOD3, `patches/0001`)
 
-From [duanyll's 48 GB 4090 work](https://duanyll.com/2026/7/13/4090-48G-P2P/) (branch `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`). The patch here is that branch's full diff against stock 595.71.05 (3 files / 926 lines) and applies cleanly to 610.43.03 (offsets only).
+From [duanyll's 48 GB 4090 work](https://duanyll.com/2026/7/13/4090-48G-P2P/) (branch `Duanyll/open-gpu-kernel-modules@595.71.05-p2p-48g`). The patch here is that branch's full diff against stock 595.71.05 (3 files / 926 lines) and applies to **610.43.03 after uild.sh has applied its 16 base patches** with offsets only (89–97 lines). Apply it to that prepared tree, not to the bare upstream source: one hunk conflicts there because a base patch touches the same region.
 
 Idea: instead of one identity mapping of the whole FB, map **each allocation** into a VA slot of the peer's BAR1 (`kbusMapFbAperture_HAL`), so the offset is always inside the window; GMMU PTEs then translate to the high FB address, and the peer PTE encodes `windowDmaBase + offset`. Overhead is tiny: a 2-GPU ring needs ~4 mappings / ~24 MB.
 
@@ -101,12 +101,16 @@ pThis->__kbusHasPcieBar1P2PMapping__         = &kbusHasPcieBar1P2PMapping_GH100;
 pThis->__kbusIsPcieBar1P2PMappingSupported__ = &kbusIsPcieBar1P2PMappingSupported_GH100;
 ```
 
-Proof, from the first cross-GPU copy after a cold boot:
+Proof, from the first cross-GPU copy after a cold boot (the `METHOD3` line is `LEVEL_INFO` in the
+patch, so we raised it to `LEVEL_ERROR` with `scripts/m3diag*.py` for the run below — nothing else changed):
 
 ```
 NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf001a1 size 0x200000 bar1Off 0x400000 dmaBase 0x12000400000
 NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: ... bar1Sup=1 staticPeer=0 staticMap=0
 ```
+
+> To decide whether the dynamic mapping is really live, trust the bit-exact check (`scripts/p2p_gate.py`,
+> every size `mismatched=0` and 2 GiB not crashing), **not** these log lines.
 
 The full investigation is written up as a tutorial in [docs/CASE-STUDY.md](docs/CASE-STUDY.md).
 
@@ -121,7 +125,7 @@ The full investigation is written up as a tutorial in [docs/CASE-STUDY.md](docs/
 
 ```bash
 git clone https://github.com/elongwz/CMP170HX-Gen4-DynBAR1.git
-cat docs/REPRODUCE.md      # apply patches → safe rebuild → system config → cold boot → 6 checks
+cat docs/REPRODUCE.md      # apply patches → safe rebuild → system config → cold boot → acceptance checks (link / memory / Gen4 log / bit-exact / throughput)
 ```
 
 Three rules you must not break:
@@ -147,7 +151,7 @@ Three rules you must not break:
 │   ├── 0003-ga100-gen4-bringup.patch     nv.c three-stage Gen4 bring-up
 │   ├── 0004-gsp-capforce-and-gen2.patch  GSP capforce + gen2 clamp guard
 │   └── 0005-tu102-gen3seq.patch          GSP-time Gen3 sequence
-├── config/                    modprobe recipe, ACS-off script/service, LnkCtl2 fallback
+├── config/                    modprobe recipe; ACS-off script+service; LnkCtl2 script+service
 ├── scripts/                   verification and diagnostic tools
 ├── tools/build_noreload.sh    safe rebuild (no auto reload)
 ├── logs/                      dmesg and link evidence
@@ -183,7 +187,7 @@ Two systemd units must be enabled: `cmp-gen4-acs-off.service` (clear ACS at sysi
 1. **`nvidia-smi` will always report `pcie.link.gen.current = 2/3`** — a GSP belief, not reality. Use `lspci -vv` (`LnkSta`) and measured bandwidth.
 2. **Never hot-reload**: `rmmod`/`modprobe` while BAR1/GSP state is broken wedges the whole machine (SSH banner timeout → power cycle).
 3. **A warm reboot does not reset the PHY** — power off for 15 s+ after changing the driver or conf.
-4. `M3DIAG` / `M3DIAG2` probes are still compiled in (at `LEVEL_ERROR`, so they spam on every mapping). Remove them by searching for `M3DIAG` in `nv_gpu_ops.c` / `kern_bus_gh100.c` and rebuilding.
+4. **Diagnostics are optional**: `patches/0001..0005` produce a clean build (no `M3DIAG`, and the `METHOD3` line stays at `LEVEL_INFO` so dmesg hides it). The measurements here came from a build with `scripts/m3diag*.py` applied; use those only when you need the logs.
 5. `08:00.0`'s `LnkCtl2` gets rewritten to 2 by the gen2 late clamp → the fallback service is mandatory.
 6. **Do not use `CmpGen4=1`** (an early approach): GSP fails to boot (`No devices`, writes to `0x881C0` are rejected with `0xbadf5040`).
 7. **`cmp-pcie-speed` is useless here**: `SET_PCIE_SPEED(3)` still returns `0x56`; Gen4 comes from the nv.c bring-up.
