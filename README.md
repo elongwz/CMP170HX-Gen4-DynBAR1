@@ -5,7 +5,11 @@
 > 一句话：静态 BAR1 identity 映射要求「BAR1 窗口 ≥ 显存」，而 170HX 是 64 GiB 窗口 / 80 GiB 显存。
 > 本方案把 GH100 的**逐分配动态 BAR1 映射（METHOD3）**移植到 610.43.03 驱动，并补上 GA100 缺失的 **6 行 HAL 派发**。
 
-英文摘要见文末 [English TL;DR](#english-tldr)。
+| 中文 | 英文 |
+|---|---|
+| 本文 | [README.en.md](README.en.md) |
+
+排查过程被单独写成教程：[docs/CASE-STUDY.md](docs/CASE-STUDY.md)（`bar1Sup=0` → 6 行派发 → CUDA init 失败 → 再 4 行）。
 
 ---
 
@@ -138,8 +142,10 @@ cat docs/REPRODUCE.md      # 从零复现：打补丁 → 安全重编 → 系�
 ```
 .
 ├── README.md                 本文件（原理 + 结论 + 坑）
+├── README.en.md              English version
 ├── docs/
 │   ├── REPRODUCE.md          从零复现步骤（可照抄）
+│   ├── CASE-STUDY.md         排查教程（本文第 2.2 节的完整推导）
 │   └── RESULTS.md            全部实测原始数据与时间线
 ├── patches/
 │   ├── 0001-method3-dynamic-bar1.patch    duanyll 595 fork 的 diff（3 文件 / 926 行）
