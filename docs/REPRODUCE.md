@@ -72,7 +72,11 @@ ls $SRC/kernel-open/nvidia/nv.c $SRC/src/nvidia/generated/g_kern_bus_nvoc.c
 用仓库里的 `patches/`（已 clone 到 `/home/gis/p2p/Gen4-DynBAR1/patches/`），然后在源码根目录按顺序打：
 
 > ⚠️ 必须打在 **`build.sh` 已经跑过、16 个基础补丁已就位**的树上（就是 §1 那一步）。
-> 直接对官方原始 610.43.03 源码打，`0001` 会有 1 个 hunk 冲突（基础补丁动过同一区域）。
+> 直接对官方原始 610.43.03 源码打，`0001` 更会冲突（基础补丁动过同一区域）。
+>
+> `0001` 是用 `--fuzz=3` 打的（下面命令已带）：它来自 595 源码树，其中
+> `nvGpuOpsGetExternalAllocPtesOrPhysAddrs` 的原型改动 hunk 的 3 行上下文在 610 上漂了，
+> 用默认 fuzz 会报 1/20 失败，加 `--fuzz=3` 后 20/20 干净落盘（已在本机 610 树上验证）。
 
 ```bash
 SRC=/home/gis/p2p/cmpunlocker-v0.5-oc-80g-gen3/driver/.build/open-gpu-kernel-modules-610.43.03
@@ -80,21 +84,21 @@ P=/home/gis/p2p/Gen4-DynBAR1/patches
 cd $SRC
 
 # 1) 逐分配动态 BAR1（duanyll 595 fork 相对官方 595 的 diff，直接适用于 610）
-sudo patch -p1 --dry-run < $P/0001-method3-dynamic-bar1.patch
-sudo patch -p1 < $P/0001-method3-dynamic-bar1.patch
+sudo patch -p1 --fuzz=3 --dry-run < $P/0001-method3-dynamic-bar1.patch
+sudo patch -p1 --fuzz=3 < $P/0001-method3-dynamic-bar1.patch
 
 # 2) GA100 → GH100 的 6 行 HAL 派发（本项目原创，必须有，否则 bar1Supported 恒 0）
-sudo patch -p1 --dry-run < $P/0002-ga100-hal-dispatch.patch
-sudo patch -p1 < $P/0002-ga100-hal-dispatch.patch
+sudo patch -p1 --fuzz=3 --dry-run < $P/0002-ga100-hal-dispatch.patch
+sudo patch -p1 --fuzz=3 < $P/0002-ga100-hal-dispatch.patch
 
 # 3) Gen4 bring-up（nv.c）
-sudo patch -p1 < $P/0003-ga100-gen4-bringup.patch
+sudo patch -p1 --fuzz=3 < $P/0003-ga100-gen4-bringup.patch
 
 # 4) capforce + gen2 收尾 guard（kernel_gsp.c）
-sudo patch -p1 < $P/0004-gsp-capforce-and-gen2.patch
+sudo patch -p1 --fuzz=3 < $P/0004-gsp-capforce-and-gen2.patch
 
 # 5) GSP 阶段 Gen3 序列（kernel_gsp_tu102.c）
-sudo patch -p1 < $P/0005-tu102-gen3seq.patch
+sudo patch -p1 --fuzz=3 < $P/0005-tu102-gen3seq.patch
 ```
 
 校验（三条都应成立）：
@@ -107,7 +111,7 @@ grep -c "METHOD3" $SRC/src/nvidia/src/kernel/gpu/bus/p2p_api.c                  
 grep -c "nv_cmp170hx_gen3_post" $SRC/kernel-open/nvidia/nv.c                        # 3（定义 + 注释 + 调用）
 ```
 
-> 若某补丁 `--dry-run` 报失败，用 `patch -p1 --fuzz=3` 或对照 `src/` 下我们最终的 5 个文件手工合。
+> 若某补丁 `--dry-run` 仍报失败，对照 `src/` 下我们最终的 5 个文件手工合（那 5 个文件是打过全部补丁的成品）。
 > `0001` 的路径前缀是 `a/src/...`、`0003` 是 `a/kernel-open/...`，都在源码根用 `-p1` 即可。
 
 > **关于诊断打印**：`0001..0005` 打出来的是**干净构建**（只有 `METHOD3: dynamic BAR1 P2P map ...`
