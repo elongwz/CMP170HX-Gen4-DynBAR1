@@ -108,6 +108,27 @@ Gen4 x16 理论 31.5 GB/s（128b/130b），26.7 = 85%，属 PCIe 正常效率 �
 |---|---|
 | 动态分支没进（缺 0002） | `M3DIAG pte-gate: ... bar1Sup=0` + `Assertion failed: ((base & RM_PAGE_MASK) == 0) @ kern_bus.c:298` |
 | 能力开了但创建路径缺 | `kbusCreateP2PMapping_GP100: P2P type 2 is not supported` / `NV_ERR_NOT_SUPPORTED (0x56) @ p2p_api.c:599` |
-| 正常 | `METHOD3: dynamic BAR1 P2P map GPU0->GPU1 ... dmaBase 0x...` + `bar1Sup=1` |
+| 正常（**仅诊断构建**可见） | `METHOD3: dynamic BAR1 P2P map GPU0->GPU1 ... dmaBase 0x...` + `bar1Sup=1`；干净构建里这两条都不打印（成功日志是 `LEVEL_INFO`），验收请看 §3 逐位校验 |
 | Gen4 未上 | `CMP Gen4: retrain did not reach target (LNKSTA=0x1102 ret=0)` |
 | ACS 未关的后果 | 吞吐虚高但 `mismatched != 0`，或 2 GiB 时 `Xid 45` / `Xid 109` |
+
+## 10. 复核：干净构建（诊断日志已注释）复测 2026-11-26 13:35 UTC
+
+把 5 处 `M3DIAG` / `M3DIAG2` 探针整块注释掉（保留代码，随时可解开），并把
+`METHOD3: dynamic BAR1 P2P map ...` 成功日志恢复为补丁原样的 `LEVEL_INFO`，重编后物理断电冷启复测：
+
+| 项目 | 结果 |
+|---|---|
+| `diff(pristine + 0001(--fuzz=3), 源码)` | **真实代码差异 0 行**（只剩 `//` 注释） |
+| `strings nvidia.ko \| grep -c M3DIAG` | **0** |
+| `strings nvidia.ko \| grep -c "METHOD3: dynamic BAR1 P2P map"` | 2（补丁自带的失败 `LEVEL_ERROR` + 成功 `LEVEL_INFO`） |
+| 驱动编译时间 | `Thu Nov 26 05:14:47 AM UTC 2026`，`srcversion E284FAD4D3D7E647BC3E719`（仅改注释，`srcversion` 不变） |
+| 五跳链路 | `00:01.1 / 04:10.0 / 05:00.0 / 07:00.0 / 08:00.0` 全 `16GT/s x16`，`LnkCtl2` 全 `0004`（root `0044`） |
+| 显存 | 81920 MiB × 2 |
+| Gen4 三段日志 | 仍在（`NV_DBG_ERRORS` 级，默认可见），两卡都 `PCIe link trained (LNKSTA=0x1104)` |
+| `dmesg \| grep -cE "M3DIAG\|METHOD3"`（跑完 P2P 压测后） | **0 行** |
+| `p2p_gate.py` | 4 / 64 / 256 / 1024 / 2048 MiB 全部 `mismatched=0`，`ALL OK` |
+| `p2p_rep.py`（1 GiB，3 轮 × 双向 × 单双流） | 0→1 **26.31**、1→0 **26.30** GB/s（与诊断构建完全一致） |
+| Xid | 0 |
+
+结论：**诊断日志只影响日志，删掉注释或注释掉都不改变功能**；本文 §3–§7 的数值在干净构建上逐项复现。
