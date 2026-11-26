@@ -1,0 +1,56 @@
+--- a/src/nvidia/generated/g_kern_bus_nvoc.c
++++ b/src/nvidia/generated/g_kern_bus_nvoc.c
+@@ -786,7 +786,7 @@
+     }
+     else
+     {
+-        pThis->__kbusCreateP2PMapping__ = &kbusCreateP2PMapping_GP100;
++        pThis->__kbusCreateP2PMapping__ = &kbusCreateP2PMapping_GH100;
+     }
+ 
+     // kbusRemoveP2PMapping -- halified (2 hals) body
+@@ -797,7 +797,7 @@
+     }
+     else
+     {
+-        pThis->__kbusRemoveP2PMapping__ = &kbusRemoveP2PMapping_GP100;
++        pThis->__kbusRemoveP2PMapping__ = &kbusRemoveP2PMapping_GH100;
+     }
+ 
+     // kbusGetEgmPeerId -- halified (2 hals) body
+@@ -1114,7 +1114,7 @@
+     // default
+     else
+     {
+-        pThis->__kbusCreateP2PMappingForBar1P2P__ = &kbusCreateP2PMappingForBar1P2P_395e98;
++        pThis->__kbusCreateP2PMappingForBar1P2P__ = &kbusCreateP2PMappingForBar1P2P_GH100;
+     }
+ 
+     // kbusRemoveP2PMappingForBar1P2P -- halified (2 hals) body
+@@ -1126,7 +1126,7 @@
+     // default
+     else
+     {
+-        pThis->__kbusRemoveP2PMappingForBar1P2P__ = &kbusRemoveP2PMappingForBar1P2P_395e98;
++        pThis->__kbusRemoveP2PMappingForBar1P2P__ = &kbusRemoveP2PMappingForBar1P2P_GH100;
+     }
+ 
+     // kbusHasPcieBar1P2PMapping -- halified (2 hals) body
+@@ -1138,7 +1138,7 @@
+     // default
+     else
+     {
+-        pThis->__kbusHasPcieBar1P2PMapping__ = &kbusHasPcieBar1P2PMapping_d69453;
++        pThis->__kbusHasPcieBar1P2PMapping__ = &kbusHasPcieBar1P2PMapping_GH100;
+     }
+ 
+     // kbusIsPcieBar1P2PMappingSupported -- halified (2 hals) body
+@@ -1150,7 +1150,7 @@
+     // default
+     else
+     {
+-        pThis->__kbusIsPcieBar1P2PMappingSupported__ = &kbusIsPcieBar1P2PMappingSupported_d69453;
++        pThis->__kbusIsPcieBar1P2PMappingSupported__ = &kbusIsPcieBar1P2PMappingSupported_GH100;
+     }
+ 
+     // kbusCheckFlaSupportedAndInit -- halified (2 hals) body

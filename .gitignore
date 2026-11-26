@@ -1,0 +1,24 @@
+# NVIDIA 源码（体积大 + 版权，不入库；按 docs/REPRODUCE.md 从官方包复现）
+src/
+pristine/
+
+# 编译产物
+*.ko
+*.o
+*.mod
+*.mod.c
+*.a
+*.so
+Module.symvers
+modules.order
+.build/
+*.tar.gz
+*.zip
+
+# 日志临时文件
+logs/*.tmp
+logs/build*.log
+
+# 系统
+.DS_Store
+Thumbs.db

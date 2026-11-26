@@ -1,0 +1,155 @@
+[   14.928823] NVRM: GPU 0000:05:00.0: CMP Gen2: retrain skipped (cmp_pcie_gen=4)
+[   14.928839] NVRM: GPU 0000:05:00.0: CMP Gen4: bring-up start LC0=0x80084c00 CYA=0x068731b3 PL=0x00240036 CE4=0x0000003f
+[   14.983481] NVRM: GPU 0000:05:00.0: CMP Gen4: XP programmed LC0=0x80404c00 CYA=0x060711b2 PL=0x00240036
+[   15.087481] NVRM: GPU 0000:08:00.0: CMP Gen2: retrain skipped (cmp_pcie_gen=4)
+[   15.087490] NVRM: GPU 0000:08:00.0: CMP Gen4: bring-up start LC0=0x80084c00 CYA=0x068731b3 PL=0x00220036 CE4=0x0000003f
+[   15.143486] NVRM: GPU 0000:08:00.0: CMP Gen4: XP programmed LC0=0x80404c00 CYA=0x060711b2 PL=0x00240036
+[   15.146478] NVRM: GPU 0000:05:00.0: CMP Gen4: PCIe link trained (LNKSTA=0x1104)
+[   15.304829] NVRM: GPU 0000:08:00.0: CMP Gen4: PCIe link trained (LNKSTA=0x1104)
+[   15.311733] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.311745] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.311758] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.311770] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.443048] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.443098] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.444403] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.455238] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.457610] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.469209] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.483805] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.495372] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.496908] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.516494] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.530167] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   15.545199] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   22.903765] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.153750] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.201918] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu0 pcieP2PType=1 byDefault=0 peerMask(0->0)=0x0 peerMask(0->0)=0x0 static0=0 static1=0
+[   24.201923] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.201924] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.201926] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu1 pcieP2PType=1 byDefault=0 peerMask(1->1)=0x0 peerMask(1->1)=0x0 static0=0 static1=0
+[   24.560721] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.560741] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   24.560743] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   24.560748] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.560760] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.560762] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.561665] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.561674] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   24.561675] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   24.798388] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.798395] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu0 pcieP2PType=1 byDefault=0 peerMask(1->0)=0x0 peerMask(0->1)=0x0 static0=0 static1=0
+[   24.798438] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   24.798440] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf001a1 size=0x200000
+[   24.798470] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf001a1 size 0x200000 bar1Off 0x400000 dmaBase 0x12000400000 (total 0x200000)
+[   24.798471] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf001a1 windowBase=0x12000400000
+[   24.806224] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf001a4 size=0x1400000
+[   24.806267] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf001a4 size 0x1400000 bar1Off 0x400000 dmaBase 0x12000400000 (total 0x1400000)
+[   24.806268] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf001a4 windowBase=0x12000400000
+[   24.812112] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf001a7 size=0x1400000
+[   24.812154] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf001a7 size 0x1400000 bar1Off 0x400000 dmaBase 0x12000400000 (total 0x1400000)
+[   24.812156] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf001a7 windowBase=0x12000400000
+[   27.657803] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.692632] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu0 pcieP2PType=1 byDefault=0 peerMask(0->0)=0x0 peerMask(0->0)=0x0 static0=0 static1=0
+[   33.692638] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.692640] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.692641] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu1 pcieP2PType=1 byDefault=0 peerMask(1->1)=0x0 peerMask(1->1)=0x0 static0=0 static1=0
+[   33.868224] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.868238] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   33.868239] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   33.868244] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.868250] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.868252] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.869568] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   33.869578] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   33.869578] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   48.037801] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu0 pcieP2PType=1 byDefault=0 peerMask(0->0)=0x0 peerMask(0->0)=0x0 static0=0 static1=0
+[   48.037806] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.037808] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.037809] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu1 pcieP2PType=1 byDefault=0 peerMask(1->1)=0x0 peerMask(1->1)=0x0 static0=0 static1=0
+[   48.214203] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.214216] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   48.214218] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   48.214222] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.214229] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.214231] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.215544] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.215554] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   48.215555] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   48.392645] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.392652] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu0 pcieP2PType=1 byDefault=0 peerMask(1->0)=0x0 peerMask(0->1)=0x0 static0=0 static1=0
+[   48.392777] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.392779] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU1 peerGPU0 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf004e3 size=0x20000000
+[   48.393149] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU1->GPU0 hMem 0xcaf004e3 size 0x20000000 bar1Off 0x400000 dmaBase 0x10000400000 (total 0x20000000)
+[   48.393150] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU1->GPU0 hMem=0xcaf004e3 windowBase=0x10000400000
+[   48.393268] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   48.393269] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf004e5 size=0x20000000
+[   48.393642] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf004e5 size 0x20000000 bar1Off 0x400000 dmaBase 0x12000400000 (total 0x20000000)
+[   48.393643] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf004e5 windowBase=0x12000400000
+[   58.207948] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.268446] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu0 pcieP2PType=1 byDefault=0 peerMask(0->0)=0x0 peerMask(0->0)=0x0 static0=0 static1=0
+[   58.268450] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.268452] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.268454] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu1 pcieP2PType=1 byDefault=0 peerMask(1->1)=0x0 peerMask(1->1)=0x0 static0=0 static1=0
+[   58.444734] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.444748] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   58.444749] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   58.444753] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.444760] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.444762] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.446097] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.446107] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   58.446108] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   58.657237] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.657243] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu0 pcieP2PType=1 byDefault=0 peerMask(1->0)=0x0 peerMask(0->1)=0x0 static0=0 static1=0
+[   58.657285] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.657287] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf00689 size=0x200000
+[   58.657316] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf00689 size 0x200000 bar1Off 0x400000 dmaBase 0x12000400000 (total 0x200000)
+[   58.657317] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf00689 windowBase=0x12000400000
+[   58.662035] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   58.662040] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU1 peerGPU0 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf00694 size=0x200000
+[   58.662069] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU1->GPU0 hMem 0xcaf00694 size 0x200000 bar1Off 0x400000 dmaBase 0x10000400000 (total 0x200000)
+[   58.662070] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU1->GPU0 hMem=0xcaf00694 windowBase=0x10000400000
+[   58.728120] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU1 peerGPU0 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf00696 size=0x1400000
+[   58.728154] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU1->GPU0 hMem 0xcaf00696 size 0x1400000 bar1Off 0x600000 dmaBase 0x10000600000 (total 0x1600000)
+[   58.728155] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU1->GPU0 hMem=0xcaf00696 windowBase=0x10000600000
+[   58.728300] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf00698 size=0x1400000
+[   58.728333] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf00698 size 0x1400000 bar1Off 0x600000 dmaBase 0x12000600000 (total 0x1600000)
+[   58.728333] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf00698 windowBase=0x12000600000
+[   58.729921] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU1 peerGPU0 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf0069a size=0x4000000
+[   58.729980] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU1->GPU0 hMem 0xcaf0069a size 0x4000000 bar1Off 0x1a00000 dmaBase 0x10001a00000 (total 0x5600000)
+[   58.729980] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU1->GPU0 hMem=0xcaf0069a windowBase=0x10001a00000
+[   58.730049] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf0069c size=0x4000000
+[   58.730104] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf0069c size 0x4000000 bar1Off 0x1a00000 dmaBase 0x12001a00000 (total 0x5600000)
+[   58.730105] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf0069c windowBase=0x12001a00000
+[   58.741425] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU1 peerGPU0 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf0069e size=0x10000000
+[   58.741616] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU1->GPU0 hMem 0xcaf0069e size 0x10000000 bar1Off 0x5a00000 dmaBase 0x10005a00000 (total 0x15600000)
+[   58.741616] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU1->GPU0 hMem=0xcaf0069e windowBase=0x10005a00000
+[   58.741701] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf006a0 size=0x10000000
+[   58.741885] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf006a0 size 0x10000000 bar1Off 0x5a00000 dmaBase 0x12005a00000 (total 0x15600000)
+[   58.741885] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf006a0 windowBase=0x12005a00000
+[   64.089297] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu0 pcieP2PType=1 byDefault=0 peerMask(0->0)=0x0 peerMask(0->0)=0x0 static0=0 static1=0
+[   64.089303] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.089305] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.089306] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu1 pcieP2PType=1 byDefault=0 peerMask(1->1)=0x0 peerMask(1->1)=0x0 static0=0 static1=0
+[   64.266164] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.266178] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   64.266179] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   64.266183] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.266191] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.266193] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.267508] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.267517] NVRM: nvGpuOpsGetP2PCaps: M3DIAG2 capsgate: gpu1280<->gpu2048 access=1 nvlink=0 bar1=1 atomic=0
+[   64.267518] NVRM: nvGpuOpsGetP2PCaps: M3DIAG caps: gpu1280<->gpu2048 staticLocal=0 staticRemote=0 addr0=0x0 size0=0x0 addr1=0x0 size1=0x0
+[   64.447010] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.447016] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu1<->gpu0 pcieP2PType=1 byDefault=0 peerMask(1->0)=0x0 peerMask(0->1)=0x0 static0=0 static1=0
+[   64.447061] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.447063] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU0 peerGPU1 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf0083e size=0x40000000
+[   64.447777] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU0->GPU1 hMem 0xcaf0083e size 0x40000000 bar1Off 0x400000 dmaBase 0x12000400000 (total 0x40000000)
+[   64.447778] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU0->GPU1 hMem=0xcaf0083e windowBase=0x12000400000
+[   64.715247] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   64.715252] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-gate: mapGPU1 peerGPU0 peerSup=1 indirect=0 bar1Sup=1 staticPeer=0 staticMap=0 hMem=0xcaf00849 size=0x40000000
+[   64.715947] NVRM: _nvGpuOpsDynBar1Create: METHOD3: dynamic BAR1 P2P map GPU1->GPU0 hMem 0xcaf00849 size 0x40000000 bar1Off 0x400000 dmaBase 0x10000400000 (total 0x40000000)
+[   64.715948] NVRM: nvGpuOpsGetExternalAllocPtesOrPhysAddrs: M3DIAG pte-dyn: GPU1->GPU0 hMem=0xcaf00849 windowBase=0x10000400000
+[   88.595671] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0
+[   88.620898] NVRM: kbusIsPcieBar1P2PMappingSupported_GH100: M3DIAG2 bar1chk: gpu0<->gpu1 pcieP2PType=1 byDefault=0 peerMask(0->1)=0x0 peerMask(1->0)=0x0 static0=0 static1=0

@@ -1,0 +1,13 @@
+[Unit]
+Description=CMP170HX Gen4: set PCIe LnkCtl2 target speed = 16GT/s on both GPUs
+After=nvidia-persistenced.service systemd-modules-load.service
+Wants=nvidia-persistenced.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/cmp-gen4-lnkctl2.sh
+RemainAfterExit=yes
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+[Unit]
+Description=CMP170HX Gen4: disable ACS on PEX88096 dock switch ports (enable real GPU P2P)
+DefaultDependencies=no
+After=sysinit.target
+Before=basic.target nvidia-persistenced.service
+Wants=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/cmp-gen4-acs-off.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target

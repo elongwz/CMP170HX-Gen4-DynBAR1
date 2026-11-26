@@ -1,0 +1,197 @@
+--- a/src/nvidia/src/kernel/gpu/gsp/arch/turing/kernel_gsp_tu102.c
++++ b/src/nvidia/src/kernel/gpu/gsp/arch/turing/kernel_gsp_tu102.c
+@@ -57,6 +57,14 @@
+ #include "g_all_dcl_pb.h"
+ #include "lib/protobuf/prb.h"
+ 
++#define SEC2_DEBUG_PRI_FEATURE_OVERRIDE_PLM         0x00823804
++#define SEC2_DEBUG_PRI_FEATURE_OVERRIDE_SM_SPEED    0x0082381c
++#define SEC2_DEBUG_PRI_FEATURE_OVERRIDE_SM_SPEED_1  0x00823820
++#define SEC2_DEBUG_PRI_FBPA_CFG1                    0x009a0204
++#define SEC2_DEBUG_PRI_MMU_LMR                      0x00100ce0
++#include "kernel/gpu/cmp_hbm_ndiv_cfg.h"
++
++
+ void
+ kgspConfigureFalcon_TU102
+ (
+@@ -545,18 +553,35 @@
+         // Execute FWSEC to setup FRTS if we have a FRTS region.
+         if (kgspGetFrtsSize_HAL(pGpu, pKernelGsp) > 0)
+         {
+-            NV_ASSERT_OR_RETURN(pKernelGsp->pPreparedFwsecCmd != NULL, NV_ERR_INVALID_STATE);
+-
+-            NV_ASSERT_OK_OR_RETURN(kflcnReset_HAL(pGpu, pKernelFalcon));
++            NV_PRINTF(LEVEL_ERROR,
++                      "SEC2_DEBUG: FWSEC: pPreparedFwsecCmd=%p frtsSize=0x%x\n",
++                      pKernelGsp->pPreparedFwsecCmd,
++                      kgspGetFrtsSize_HAL(pGpu, pKernelGsp));
++
++            if (pKernelGsp->pPreparedFwsecCmd == NULL)
++            {
++                NV_PRINTF(LEVEL_ERROR, "SEC2_DEBUG: FWSEC cmd is NULL, aborting\n");
++                return NV_ERR_INVALID_STATE;
++            }
++
++            status = kflcnReset_HAL(pGpu, pKernelFalcon);
++            NV_PRINTF(LEVEL_ERROR,
++                      "SEC2_DEBUG: kflcnReset for FWSEC: 0x%x\n", status);
++            if (status != NV_OK) return status;
+ 
+             status = kgspExecuteFwsec_HAL(pGpu, pKernelGsp, pKernelGsp->pPreparedFwsecCmd);
+             portMemFree(pKernelGsp->pPreparedFwsecCmd);
+             pKernelGsp->pPreparedFwsecCmd = NULL;
+ 
+-            NV_ASSERT_OK_OR_RETURN(status);
++            NV_PRINTF(LEVEL_ERROR,
++                      "SEC2_DEBUG: FWSEC status=0x%x\n", status);
++            if (status != NV_OK) return status;
+         }
+ 
+-        NV_ASSERT_OK_OR_RETURN(kflcnResetIntoRiscv_HAL(pGpu, pKernelFalcon));
++        status = kflcnResetIntoRiscv_HAL(pGpu, pKernelFalcon);
++        NV_PRINTF(LEVEL_ERROR,
++                  "SEC2_DEBUG: kflcnResetIntoRiscv: 0x%x\n", status);
++        if (status != NV_OK) return status;
+ 
+         // Load init args into mailbox regs
+         kgspProgramLibosBootArgsAddr_HAL(pGpu, pKernelGsp);
+@@ -565,12 +590,138 @@
+     // Execute Booter Load
+     status = kgspExecuteBooterLoad_HAL(pGpu, pKernelGsp,
+                                        _kgspGetBooterLoadArgs(pKernelGsp, bootMode));
++
++    {
++        NvU32 devId = pGpu->idInfo.PCIDeviceID >> 16;
++        if (devId == 0x20C2 || devId == 0x2082)
++            NV_PRINTF(LEVEL_ERROR,
++                      "SEC2_DEBUG: normal BooterLoad status=0x%x\n", status);
++    }
++
++    {
++        NvU32 devId = pGpu->idInfo.PCIDeviceID >> 16;
++        if ((devId == 0x20C2 || devId == 0x2082) && status == NV_OK)
++        {
++            NV_PRINTF(LEVEL_ERROR,
++                      "SEC2_DEBUG: POST-BooterLoad verify PLM=0x%08x SS0=0x%08x SS1=0x%08x "
++                      "CFG1=0x%08x LMR=0x%08x\n",
++                      GPU_REG_RD32(pGpu, SEC2_DEBUG_PRI_FEATURE_OVERRIDE_PLM),
++                      GPU_REG_RD32(pGpu, SEC2_DEBUG_PRI_FEATURE_OVERRIDE_SM_SPEED),
++                      GPU_REG_RD32(pGpu, SEC2_DEBUG_PRI_FEATURE_OVERRIDE_SM_SPEED_1),
++                      GPU_REG_RD32(pGpu, SEC2_DEBUG_PRI_FBPA_CFG1),
++                      GPU_REG_RD32(pGpu, SEC2_DEBUG_PRI_MMU_LMR));
++        }
++    }
++
++
++    {
++        NvU32 lateDevId = pGpu->idInfo.PCIDeviceID >> 16;
++        if ((lateDevId == 0x20C2 || lateDevId == 0x2082) && status == NV_OK)
++        {
++            #define PCIE_GEN2_PRIV_MISC_1_ADDR_LATE     0x0008841cU
++            #define PCIE_GEN2_PRIV_MISC_1_GEN2_EN_LATE  ((1U << 11) | (1U << 13))
++            #define PCIE_GEN2_PRIV_MISC_1_GEN2_VAL_LATE ((1U << 12) | (1U << 14))
++            NvU32 misc1Late = GPU_REG_RD32(pGpu, PCIE_GEN2_PRIV_MISC_1_ADDR_LATE);
++            NvU32 misc1WantLate = (misc1Late | PCIE_GEN2_PRIV_MISC_1_GEN2_EN_LATE)
++                                  & ~PCIE_GEN2_PRIV_MISC_1_GEN2_VAL_LATE;
++            GPU_REG_WR32(pGpu, PCIE_GEN2_PRIV_MISC_1_ADDR_LATE, misc1WantLate);
++            NV_PRINTF(LEVEL_ERROR,
++                      "SEC2_DEBUG: PCIe PRIV_MISC_1 late pre=0x%08x post=0x%08x\n",
++                      misc1Late,
++                      GPU_REG_RD32(pGpu, PCIE_GEN2_PRIV_MISC_1_ADDR_LATE));
++            {
++                NvU32 cyaLate = GPU_REG_RD32(pGpu, 0x0008c2c0U);
++                cyaLate = cyaLate & ~(1U << 2);
++                GPU_REG_WR32(pGpu, 0x0008c2c0U, cyaLate);
++                NV_PRINTF(LEVEL_ERROR,
++                          "SEC2_DEBUG: PCIe CYA_0 late clear DIS_G2: 0x%08x (bit2=%u)\n",
++                          GPU_REG_RD32(pGpu, 0x0008c2c0U),
++                          (GPU_REG_RD32(pGpu, 0x0008c2c0U) >> 2) & 1U);
++                NvU32 linkCfgLate = GPU_REG_RD32(pGpu, 0x0008c040U);
++                linkCfgLate = (linkCfgLate & ~0x000C0000U) | (0x2U << 18);
++                GPU_REG_WR32(pGpu, 0x0008c040U, linkCfgLate);
++                NV_PRINTF(LEVEL_ERROR,
++                          "SEC2_DEBUG: PCIe LINK_CONFIG_0 late MAX_RATE=2: 0x%08x\n",
++                          GPU_REG_RD32(pGpu, 0x0008c040U));
++                GPU_REG_WR32(pGpu, 0x0008872cU, 0x00000006U);
++                NV_PRINTF(LEVEL_ERROR,
++                          "SEC2_DEBUG: PCIe XVE_OVR late=0x%08x\n",
++                          GPU_REG_RD32(pGpu, 0x0008872cU));
++            }
++        }
++    }
++
++    /* CMP Gen3: proven post-GSP Gen3 sequence (lixiangwuxian/170hx_tips).
++     * Gated on CmpGen3=1 registry key; runs after the Gen2 late block so it
++     * overrides to Gen3. Fuses are permanently burned on this card, so no
++     * volatile probe-stage fuse override is needed. Judge success by LnkSta.
++     */
++    {
++        NvU32 enableGen3 = 0;
++        (void)osReadRegistryDword(pGpu, "CmpGen3", &enableGen3);
++        NV_PRINTF(LEVEL_ERROR,
++                  "SEC2_DEBUG: TU102 booter hook reached, CmpGen3=%d, status=0x%x, devid=0x%x\n",
++                  enableGen3, status, pGpu->idInfo.PCIDeviceID >> 16);
++        if (enableGen3 == 1)
++        {
++            NvU32 v, dlmgr, i;
++            /* PRIV_MISC_1: Gen3 enable bits 11,13; clear 12,14 and 30,31 */
++            v = GPU_REG_RD32(pGpu, 0x0008841cU);
++            v = (v | (1U << 11) | (1U << 13)) &
++                ~((1U << 12) | (1U << 14) | 0xc0000000U);
++            GPU_REG_WR32(pGpu, 0x0008841cU, v);
++            /* CYA_0: clear DIS_G2 (bit2) and Gen3 disable (bit3) */
++            v = GPU_REG_RD32(pGpu, 0x0008c2c0U);
++            GPU_REG_WR32(pGpu, 0x0008c2c0U, v & ~((1U << 2) | (1U << 3)));
++            /* LINK_CTRL_2: target speed = Gen3 (normal encoding 3) */
++            v = GPU_REG_RD32(pGpu, 0x000880a8U);
++            GPU_REG_WR32(pGpu, 0x000880a8U, (v & ~0xfU) | 3U);
++            /* PL_LINK_RATE: Gen3 rate field = 3 at bits 16-19 */
++            v = GPU_REG_RD32(pGpu, 0x0008c1c0U);
++            GPU_REG_WR32(pGpu, 0x0008c1c0U, (v & ~0x000f0000U) | (3U << 16));
++            /* VSEC_HIERARCHY: SET bit12 (Gen3; opposite of Gen2) */
++            v = GPU_REG_RD32(pGpu, 0x00088610U);
++            GPU_REG_WR32(pGpu, 0x00088610U, v | 0x1000U);
++            /* LINK_CONFIG_0: MAX_RATE = 1 (REVERSED encoding: 1 = 8 GT/s) */
++            v = GPU_REG_RD32(pGpu, 0x0008c040U);
++            GPU_REG_WR32(pGpu, 0x0008c040U, (v & ~0x000c0000U) | (1U << 18));
++            /* DLManager trigger + LTSSM idle poll, then XVE_FUSE_OVERRIDE = 8 */
++            dlmgr = GPU_REG_RD32(pGpu, 0x0008b8c0U);
++            GPU_REG_WR32(pGpu, 0x0008b8c0U, dlmgr | 4U);
++            for (i = 0; i < 100000; i++)
++            {
++                v = GPU_REG_RD32(pGpu, 0x0008c040U);
++                if (v == 0xffffffffU || (v & 0x1fU) == 0) break;
++            }
++            if (v != 0xffffffffU && (v & 0x1fU) == 0)
++            {
++                GPU_REG_WR32(pGpu, 0x0008c040U, (v & ~0xfU) | 1U);
++                for (i = 0; i < 100000; i++)
++                {
++                    v = GPU_REG_RD32(pGpu, 0x0008c040U);
++                    if (v == 0xffffffffU || (v & 0x1fU) == 0) break;
++                }
++            }
++            if (v != 0xffffffffU)
++                GPU_REG_WR32(pGpu, 0x0008b8c0U, dlmgr);
++            if (v != 0xffffffffU && (v & 0x1fU) == 0)
++                GPU_REG_WR32(pGpu, 0x0008872cU, 8U);
++            NV_PRINTF(LEVEL_ERROR,
++                      "SEC2_DEBUG: PCIe Gen3 post-GSP sequence applied (CmpGen3=1)\n");
++        }
++    }
++
+     if (status != NV_OK)
+     {
+         NV_PRINTF(LEVEL_ERROR, "failed to execute Booter Load (ucode for initial boot): 0x%x\n", status);
+         return status;
+     }
+ 
++    // HBM NDIV overclock: first half, after Booter Load, before GSP runs.
++#ifdef CMPUNLOCK_MCLK_NDIV
++    kgspCmpHbmNdivPostBooterLoad(pGpu, pKernelGsp);
++#endif
++
+     // Send init RPCs necessary for GSP-RM booting, before creating OBJGPU.
+     // Skips for suspend/resume as GSP saves/restores context
+     if (bootMode == KGSP_BOOT_MODE_NORMAL)
