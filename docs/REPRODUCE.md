@@ -244,7 +244,7 @@ nvidia-smi --query-gpu=index,name,memory.total,pci.bus_id --format=csv
 ### 6.3 动态 BAR1 是否真的接管
 
 ```bash
-# Gen4 三段（这三行是 LEVEL_ERROR，干净构建也能看到）
+# Gen4 三段（NV_DBG_ERRORS 级，干净构建里默认可见）
 sudo dmesg | grep -E "CMP Gen4: (bring-up start|XP programmed|PCIe link trained)" | tail -10
 # 动态窗口日志（见下方说明：干净构建里看不到，判据以 6.4 为准）
 sudo dmesg | grep -E "METHOD3|M3DIAG" | tail -20
